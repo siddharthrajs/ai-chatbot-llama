@@ -6,10 +6,10 @@
 Check the requirements.txt for dependencies. 
 
 ## Instructions
-- install requirements manually
+- install requirements manually <br/>
     `pip install <each_requirement_name>`
 
-- run the app using streamlit
+- run the app using streamlit <br/>
     `streamlit run app.py`
 
 
