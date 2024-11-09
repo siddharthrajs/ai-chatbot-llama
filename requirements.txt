@@ -3,3 +3,4 @@ pypdf2
 langchain 
 langchain_ollama 
 faiss-cpu
+ollama

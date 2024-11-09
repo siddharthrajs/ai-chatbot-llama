@@ -8,6 +8,8 @@ from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain_ollama import ChatOllama
 from langchain.schema import AIMessage, HumanMessage
+from langchain import LangChain, VectorStoreRetriever, ConversationBufferMemory, ConversationChain 
+from ollama import Ollama
 
 ollama_model = ChatOllama(model="llama3", server="http://localhost:11434")
 
@@ -60,17 +62,28 @@ def get_vectorstore(text_chunks):
     return vectorstore
 
 
+# def get_conversation_chain(vectorstore):
+#     llm = ollama()
+#     memory = ConversationBufferMemory(
+#         memory_key="chat_history",
+#         return_messages=True
+#     )
+#     conversation_chain = ConversationalRetrievalChain.from_llm(
+#         llm=llm,
+#         retriever=vectorstore.as_retriever(),
+#         memory=memory
+#     )
+#     return conversation_chain
+
 def get_conversation_chain(vectorstore):
-    llm = ollama()
-    memory = ConversationBufferMemory(
-        memory_key="chat_history",
-        return_messages=True
-    )
-    conversation_chain = ConversationalRetrievalChain.from_llm(
-        llm=llm,
-        retriever=vectorstore.as_retriever(),
-        memory=memory
-    )
+    # Initialize the language model 
+    llm = Ollama() 
+    # Create a memory buffer to store conversation history 
+    memory = ConversationBufferMemory( memory_key="chat_history", return_messages=True ) 
+    # Create a retriever using the vector store 
+    retriever = VectorStoreRetriever(vectorstore) 
+    # Create the conversation chain using the language model, retriever, and memory buffer 
+    conversation_chain = ConversationChain( llm=llm, retriever=retriever, memory=memory ) 
     return conversation_chain
 
 def get_response(human_message, text_chunks):
@@ -102,6 +115,16 @@ def main():
     human_message = st.text_input("Ask a question about your documents:")
     # human_message.split('\n')[-1]
     
+    if ollama_model.model == "llama3.2:1b":
+            model_name = "Llama3.2 1B"
+    elif ollama_model.model == "llama3.2":
+        model_name = "Llama3.2 3B"
+    elif ollama_model.model == "llama3.1":
+        model_name = "Llama3.1 8B"
+    elif ollama_model.model == "llama3":
+        model_name = "Llama3"
+    else:
+        model_name = "Unknown model"
 
     with st.sidebar:
         st.header("Insight Ledger")
