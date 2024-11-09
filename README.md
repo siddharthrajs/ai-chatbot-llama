@@ -14,8 +14,7 @@ Check the requirements.txt for dependencies.
 
 > **_NOTE:_**  If you want something simpler, there's an app2.py file. The model doesn't use embedding and is way faster. The UI is also cleaner. Run: <br/>
     `pip install langchain streamlit PyMuPDF` 
-<br/>
     `streamlit run app2.py`
     
-    
+
 Happy coding! 🫡
